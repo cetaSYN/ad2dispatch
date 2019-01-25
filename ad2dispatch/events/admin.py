@@ -16,8 +16,9 @@ class EventVolunteerAdmin(admin.ModelAdmin):
 
 
 class VolunteerTypeAdmin(admin.ModelAdmin):
-    fields = ['type', 'max_volunteers', 'instructions']
+    fields = ['type', 'max_volunteers', 'instructions', 'hidden']
     list_display = ['type']
+    ordering = ('type', 'max_volunteers', 'hidden', 'instructions')
 
 
 admin.site.register(Event, EventAdmin)

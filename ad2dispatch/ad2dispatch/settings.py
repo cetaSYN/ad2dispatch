@@ -108,10 +108,10 @@ DATABASES = {
         'USER': os.environ.get('AD2_DB_USER', 'ad2dispatch'),
         'PASSWORD': os.environ.get('AD2_DB_PASSWORD'),
         'PORT': os.environ.get('AD2_DB_PORT', '3306'),
-        'OPTIONS': {'ssl':{
-                    'key':'./client-key.pem',
-                    'cert':'./client-cert.pem',
-                    'ca':'./ca.pem'
+        'OPTIONS': {'ssl': {
+                    'key': './client-key.pem',
+                    'cert': './client-cert.pem',
+                    'ca': './ca.pem'
                     }
         }
     }

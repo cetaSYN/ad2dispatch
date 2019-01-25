@@ -14,10 +14,14 @@
 			{% for event in events %}
 				<tr>
 					<td class="vol text-right text-nowrap">
-						<div class="col-md-4"><abbr title="{{ event.days_until_msg }}">{{ event.summary }}</abbr></div>
 						{% for type in event.type %}
-							<div class="col-md-4"><input type="submit" value="{% if type.me %}Un-v{% else %}V{% endif %}olunteer for {{ type }}" name='{"event":{{ event.id }},"type":{{ type.id }}}'>
-								&nbsp;<span class="glyphicon glyphicon-phone {% if type.me %}text-success{% endif %}" aria-hidden="true"></span>
+							{% if forloop.first %}
+								<div class="col-md-6"><abbr title="{{ event.days_until_msg }}">{{ event.summary }}</abbr></div>
+							{% else %}
+								<div class="col-md-6"></div>
+							{% endif %}
+							<div class="col-md-6"><input type="submit" value="{% if type.me %}Un-v{% else %}V{% endif %}olunteer for {{ type }}" name='{"event":{{ event.id }},"type":{{ type.id }}}'>
+								&nbsp;<span class="glyphicon glyphicon-phone {% if type.me %}text-success{% endif %}" aria-hidden="true"><br></span>
 								( {{ type.volnum }}
 								{% if type.max_volunteers %}/&nbsp;{{ type.max_volunteers }}{% endif %}
 								{% if type.requested_volunteers %}/&nbsp;{{ type.requested_volunteers}}{% endif %}
@@ -29,7 +33,6 @@
 								{% endif %}
 							</div>
 						{% endfor %}
-
 					</td>
 				</tr>
 			{% endfor %}
