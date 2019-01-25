@@ -1,0 +1,40 @@
+- model: events.volunteertype
+  pk: 1
+  fields: {type: driver, max_volunteers: null, instructions: driver}
+- model: events.volunteertype
+  pk: 2
+  fields: {type: dispatcher, max_volunteers: null, instructions: dispatch}
+- model: pages.page
+  pk: 1
+  fields: {parent_page: null, order: 0, title: Home, content: Welcome to the home
+      page!, edited_by: null, edited_date: null, raw: false}
+- model: events.event
+  pk: 1
+  fields: {title: Test, date_time: !!timestamp '2119-01-30 06:00:00+00:00', duration: '06:00:00',
+    location: null, attire: null, details: This is an example event., list_date: 1970-01-01}
+# Comment below this in production...
+- model: auth.user
+  pk: 1
+  fields:
+    password: pbkdf2_sha256$120000$yaMsshi6hc5o$sdMFzQDaofVrBmo/hKYAI8Up4LtmABqGCv8nYmqBgA0=
+    last_login: 2019-01-25 19:39:01.582875+00:00
+    is_superuser: true
+    username: admin
+    first_name: 'admin'
+    last_name: 'admin'
+    email: admin@admin.com
+    is_staff: true
+    is_active: true
+    date_joined: 2019-01-25 19:38:52.955124+00:00
+    groups: []
+    user_permissions: []
+- model: userprofiles.volunteer
+  pk: 2
+  fields: {user: 1, service: USAF, rank: admin, phone_number: 0123456789, phone_number_2: null,
+    vehicle_desc: admin, ready: false, dispatched: false, council_pos: null, sup_name: admin,
+    sup_phone: admin, location: null, accepted_waiver: true}
+- model: news.article
+  pk: 1
+  fields: {created_by: 1, created_date: !!timestamp '2019-01-25 19:32:58+00:00', edited_by: null,
+    edited_date: null, title: Example, content: This is an example news article!!}
+
