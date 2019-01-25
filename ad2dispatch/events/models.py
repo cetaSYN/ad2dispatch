@@ -23,6 +23,9 @@ class Event(models.Model):
                                  'Leaving this blank will add it 30 days ' +
                                  'prior to the start.')
 
+    class Meta:
+        default_permissions = ()
+
     def __str__(self):
         return self.title + ' - ' + defaultfilters.date(
             timezone.localtime(self.date_time), "(D) d M: Hi")
@@ -72,6 +75,12 @@ class VolunteerType(models.Model):
     type = models.CharField(max_length=16, null=False)
     max_volunteers = models.IntegerField(null=True, blank=True)
     instructions = models.TextField(null=False)
+    hidden = models.BooleanField(null=False, blank=False, default=False)
+
+    class Meta:
+        default_permissions = ()
+        permissions = (("view_hidden_events", "Can view hidden events"),
+                       ("vol_hidden_events", "Can volunteer for hidden events"))
 
     def __str__(self):
         return self.type
@@ -92,6 +101,9 @@ class EventVolunteer(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, null=False)
     type = models.ForeignKey(VolunteerType, on_delete=models.CASCADE,
                              null=False)
+
+    class Meta:
+        default_permissions = ()
 
     def has_volunteered(self):
         if EventVolunteer.objects.filter(volunteer=self.volunteer,
