@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="col-md-10">
+	<div class="jumbotron">
+	  {% if selected %}
+	  	<h2>{{ selected.title }}</h2>
+			{% autoescape off %}
+				{{ selected.content }}
+			{% endautoescape %}
+	    <div class="div-footer">
+	    - {{ creator.rank }} {{ selected.created_by.last_name }}<br />
+            <small>{{ creator.council_pos }}</small><br />
+			<small>{{ selected.created_date|date:"dMy Hi" }}</small>
+	    </div>
+	  {% else %}
+	    <p>No news article found.</p>
+	  {% endif %}
+	</div>
+</div>
+<div class="col-md-2">
+	<div class="jumbotron wide-list">
+		<div style="font-size:1.5em;">Articles:</div>
+		{% if article_list %}
+			<ul class="no-indent">
+			{% for article in article_list %}
+				<li><a href="/news/{{ article.id }}">{{ article.title }}</a><br /><small>{{ article.created_date|date:"dMy Hi" }}</small></li>
+			{% endfor %}
+			</ul>
+		{% else %}
+			<p>No news articles found.</p>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

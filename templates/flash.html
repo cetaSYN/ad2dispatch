@@ -1,0 +1,19 @@
+{% if form.subject.errors %}
+    <ol>
+    {% for error in form.subject.errors %}
+        <li><strong>{{ error|escape }}</strong></li>
+    {% endfor %}
+    </ol>
+{% endif %}
+{% if flash_type == 'success' %}
+    <div class="alert alert-success" role="alert">{{ flash_message|safe }}</div>
+{% endif %}
+{% if flash_type == 'info' %}
+    <div class="alert alert-info" role="alert">{{ flash_message|safe }}</div>
+{% endif %}
+{% if flash_type == 'warning' %}
+    <div class="alert alert-warning" role="alert">{{ flash_message|safe }}</div>
+{% endif %}
+{% if flash_type == 'danger' %}
+    <div class="alert alert-danger" role="alert">{{ flash_message|safe }}</div>
+{% endif %}

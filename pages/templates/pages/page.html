@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if sub_pages %}
+	<div class="header clearfix">
+		<div class="col-md-12 sub-nav">
+			<nav>
+				<ul class="nav nav-pills pull-right">
+					{% for sub_page in sub_pages %}
+						<li role="presentation" class="{% if sub_page.loc in loc %}active{% endif %}"><a href="{{ sub_page.path }}">{{sub_page.title}}</a></li>
+					{% endfor %}
+				</ul>
+			</nav>
+		</div>
+	</div>
+{% endif %}
+{% autoescape off %}
+{% if not page.raw %}
+<div class="jumbotron">
+	{% if page %}
+		{{ page.content }}
+	{% else %}
+    	<p>No content found.</p>
+	{% endif %}
+</div>
+{% else %}
+{{page.content}}
+{% endif %}
+{% endautoescape %}
+{% endblock %}

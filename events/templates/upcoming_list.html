@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% include 'events_subnav.html' %}
+{% include 'flash.html' %}
+
+<div class="jumbotron">
+	<p>Below are the upcoming {{ ORG_ACRONYM }} events for the next 30 days.</p>
+	<p>By volunteering, your identifying/contact information will be shared with the dispatcher of the event.</p>
+	<p>If you volunteer on the same day as a shift, please call or text the on-call phone: <a href="{{ ORG_PHONE_ALT }}">{{ ORG_PHONE_ALT_DISPLAY }}</a>.
+    <table class="table table-hover">
+		<form action="/volunteer/" method="post">{% csrf_token %}
+			{% for event in events %}
+				<tr>
+					<td class="vol text-right text-nowrap">
+						<div class="col-md-4"><abbr title="{{ event.days_until_msg }}">{{ event.summary }}</abbr></div>
+						{% for type in event.type %}
+							<div class="col-md-4"><input type="submit" value="{% if type.me %}Un-v{% else %}V{% endif %}olunteer for {{ type }}" name='{"event":{{ event.id }},"type":{{ type.id }}}'>
+								&nbsp;<span class="glyphicon glyphicon-phone {% if type.me %}text-success{% endif %}" aria-hidden="true"></span>
+								( {{ type.volnum }}
+								{% if type.max_volunteers %}/&nbsp;{{ type.max_volunteers }}{% endif %}
+								{% if type.requested_volunteers %}/&nbsp;{{ type.requested_volunteers}}{% endif %}
+								volunteers )
+								{% if perms.events.change_eventvolunteer %}&nbsp;
+									<a href="/volunteer/event/{{event.id}}">
+										<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+									</a>
+								{% endif %}
+							</div>
+						{% endfor %}
+
+					</td>
+				</tr>
+			{% endfor %}
+		</form>
+    </table>
+</div>
+{% endblock %}

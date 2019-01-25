@@ -1,0 +1,7 @@
+*.pyc
+.idea
+staticfiles/
+zappa_settings.json
+client-cert.pem
+client-key.pem
+ca.pem

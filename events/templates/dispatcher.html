@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'events_subnav.html' %}
+
+<div class="jumbotron">
+    {{ instructions }}
+    <table id="profile-table" class="table table-striped table-hover table-condensed">
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Service</th>
+            <th>Rank</th>
+            <th>Phone Number</th>
+            <th>Vehicle Description</th>
+        </tr>
+        {% for vol in volunteers %}
+            <tr>
+                <td>{{ vol.profile.user.first_name }}</td>
+                <td>{{ vol.profile.user.last_name }}</td>
+                <td>{{ vol.profile.service }}</td>
+                <td>{{ vol.profile.rank }}</td>
+                <td>{{ vol.profile.phone_number }}</td>
+                <td>{{ vol.profile.vehicle_desc }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

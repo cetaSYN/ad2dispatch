@@ -1,0 +1,37 @@
+{
+    "prod": {
+        "aws_region": "",
+        "django_settings": "ad2dispatch.settings",
+        "profile_name": "default",
+        "project_name": "",
+        "runtime": "python3.6",
+        "s3_bucket": "",
+        "vpc_config": {
+            "SubnetIds": ["", ""],
+            "SecurityGroupIds": [""]
+        },
+        "aws_environment_variables": {
+            "AWS_SES_ACCESS_KEY_ID": "",
+            "AWS_SES_SECRET_ACCESS_KEY": "",
+            "AWS_SES_REGION_NAME": "",
+            "AD2_ALLOWED_HOSTS": "",
+            "AD2_DB_HOST": "",
+            "AD2_DB_NAME": "",
+            "AD2_DB_PASSWORD": "",
+            "AD2_DEBUG": "False",
+            "AD2_SECRET_KEY": "",
+            "AD2_ORG_NAME": "",
+            "AD2_ORG_ACRONYM": "",
+            "AD2_ORG_PHONE": "",
+            "AD2_ORG_PHONE_DISPLAY": "",
+            "AD2_ORG_FACEBOOK": "",
+            "AD2_ORG_TWITTER": ""
+        },
+        "memory_size": 320,
+        "keep_warm": true,
+        "keep_warm_expression": "rate(4 minutes)",
+        "timeout_seconds": 10,
+        "certificate_arn": "",
+        "domain": ""
+    }
+}

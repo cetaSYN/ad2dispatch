@@ -1,0 +1,17 @@
+{% if top_pages %}
+    {% for tpage in top_pages %}
+        <li role="presentation" class="{% if tpage.loc in loc %}active{% endif %}"><a href="{{ tpage.path }}">{{ tpage.title }}</a></li>
+    {% endfor %}
+{% endif %}
+<li role="presentation" class="{% if '/news/' in request.path %}active{% endif %}"><a href="{% url 'news:index' %}">News</a></li>
+<li role="presentation" class="{% if '/volunteer/' in request.path %}active{% endif %}"><a href="/volunteer/">Volunteer</a></li>
+{% if user.is_staff %}
+    <li role="presentation"><a href="/admin">Admin</a></li>
+{% endif %}
+{% if user.is_authenticated %}
+    <li role="presentation" class="{% if request.path == '/accounts/profile/' %}active{% endif %}"><a href="/accounts/profile/">Profile</a></li>
+    <li role="presentation"><a href="/accounts/logout/">Logout</a></li>
+{% else %}
+    <li role="presentation" class="{% if request.path == '/accounts/login/' %}active{% endif %}"><a href="/accounts/login/">Login</a></li>
+    <li rold="presentation" class="{% if request.path == '/accounts/register/' %}active{% endif %}"><a href="/accounts/register/">Register</a></li>
+{% endif %}

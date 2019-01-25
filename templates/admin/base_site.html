@@ -1,0 +1,9 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('ad2dispatch Admin') }}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">ad2dispatch Admin</a></h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

@@ -1,0 +1,11 @@
+boto
+Django>=2.0.6
+django-axes>=4.4.0
+django-registration-redux>=2.4
+django-ses
+markdown>=2.6.11
+mysqlclient>=1.3.13
+pytz>=2018.4
+whitenoise
+zappa>=0.46.2
+zappa-django-utils

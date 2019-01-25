@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% include 'events_subnav.html' %}
+{% include 'flash.html' %}
+
+<div class="jumbotron">
+
+    <div class="row">
+      <form class="form-inline" action="/volunteer/manage/" method="post">{% csrf_token %}
+        {{ form.as_table }}
+        <input type="submit" class="btn btn-default" value="Filter">
+      </form>
+    </div>
+    <hr>
+    <strong>Limited to 50 results</strong>
+    <br>
+    {% for event in events %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-4"><abbr title="{{ event.days_until_msg }}">{{ event.summary }}</abbr></div>
+                    {% for type in event.type %}
+                        <div class="col-md-4">( {{ type.volnum }}
+                            {% if type.max_volunteers %}/&nbsp;{{ type.max_volunteers }}{% endif %}
+                            {% if type.requested_volunteers %}/&nbsp;{{ type.requested_volunteers}}{% endif %}
+                            {{ type|title }}{{ type.volnum|pluralize }} )
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="panel-body">
+                {% for type in event.type %}
+                    {% for vol in type.vol %}
+                        <div class="row">
+                            <div class="col-md-4">Position: {{ type }}</div>
+                            <div class="col-md-4">First Name: {{ vol.volunteer.first_name }}</div>
+                            <div class="col-md-4">Last Name: {{ vol.volunteer.last_name }}</div>
+                            <div class="col-md-4">Service: {{ vol.profile.service }}</div>
+                            <div class="col-md-4">Rank: {{ vol.profile.rank }}</div>
+                            <div class="col-md-4">Phone: {{ vol.profile.phone_number }}</div>
+                            <div class="col-md-4">Vehicle Desc: {{ vol.profile.vehicle_desc }}</div>
+                            <div class="col-md-4">Supervisor: {{ vol.profile.sup_name }}</div>
+                            <div class="col-md-4">Sup Phone: {{ vol.profile.sup_phone }}</div>
+                        </div>
+                        <hr />
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

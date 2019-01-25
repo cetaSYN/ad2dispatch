@@ -1,0 +1,125 @@
+/*.dark-primary-color    { background: #1976D2; }
+.default-primary-color { background: #2196F3; }
+.light-primary-color   { background: #BBDEFB; }
+.text-primary-color    { color: #FFFFFF; }
+.primary-text-color    { color: #212121; }
+.secondary-text-color  { color: #727272; }
+.divider-color         { border-color: #B6B6B6; }*/
+/* latin-ext */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto'), local('Roboto-Regular'), url('/static/fonts/Roboto-Regular.ttf') format('truetype');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto'), local('Roboto-Regular'), url('/static/fonts/Roboto-Regular.ttf') format('truetype');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+body{
+	margin: 0px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 0em;
+	-webkit-font-smoothing: antialiased;
+	font: 400 16px/1.5 Roboto,arial,sans-serif;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	word-break: break-word;
+	color: rgba(0,0,0,.7);
+}
+p.disclaimer {
+	color: #727272;
+	font-size: 0.8em;
+}
+.btn-primary{
+	background-color: #1976D2;
+}
+.mobile > section {
+	margin-top: 0.5em;
+	padding-top: 0.5em;
+	border-top: 5px solid #B6B6B6;
+}
+.mobile .nav-pills > li {
+	float: none ! important;
+}
+li.active > a {
+	background-color: #2196F3 ! important;
+}
+.nav-pills > li > a {
+	color: #2196F3;
+}
+.nav-tabs > li.active > a {
+	background-color: #1976D2 ! important;
+	color: #FFF ! important;
+}
+.nav-tabs > li > a {
+	color: #1976D2 ! important;
+}
+ul.nav {
+	padding-bottom: 1em;
+}
+.jumbotron {
+	margin-top: 1em;
+	margin-bottom: 1em;
+	padding: 2em 1em 2em 1em;
+}
+.jumbotron p {
+	font-size: 1.15em;
+	letter-spacing: 0.05em;
+	word-spacing: 0.15em;
+	font-weight: 400;
+}
+.jumbotron li {
+	font-size: 1.75rem;
+	letter-spacing: 0.05em;
+	word-spacing: 0.15em;
+}
+.nav-tabs {
+	margin-bottom: 10px;
+}
+ul.nav {
+	padding-bottom: 10px;
+}
+.wide-list {
+	padding-top: 1.5em;
+	padding-left: 1em ! important;
+	padding-right: 1em ! important;
+}
+.wide-list li {
+	list-style: none;
+	padding-bottom: 0.5em;
+	line-height: 1em;
+}
+.no-indent {
+	padding-left: 0em;
+	margin: 0 auto;
+}
+.div-footer {
+	width: 100%;
+	text-align: right;
+	position: relative;
+	bottom: 0px;
+}
+.sub-nav ul {
+	border-top: 3px solid #DDD;
+	padding-top: 1em;
+}
+.sub-nav li {
+	font-size: 90%;
+}
+#profile-table th {
+    width: 15em;
+}
+#profile-table tr:hover {
+    background-color: #BBDEFB;
+}
+.btn {
+    background-color: #1976D2;
+    color: #FFF;
+}
