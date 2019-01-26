@@ -7,3 +7,4 @@ client-key.pem
 ca.pem
 venv/
 mysql
+env_setup_remote.sh
