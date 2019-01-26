@@ -111,9 +111,9 @@ DATABASES = {
         'PASSWORD': os.environ.get('AD2_DB_PASSWORD'),
         'PORT': os.environ.get('AD2_DB_PORT', '3306'),
         'OPTIONS': {'ssl':{
-                    'key':'../mysql/client-key.pem',
-                    'cert':'../mysql/client-cert.pem',
-                    'ca':'../mysql/ca.pem'
+                    'key':'./certs/client-key.pem',
+                    'cert':'./certs/client-cert.pem',
+                    'ca':'./certs/ca.pem'
                     }
         }
     }
