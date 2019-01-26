@@ -29,21 +29,24 @@ class Page(models.Model):
         return self.content[:64] + '...'
 
     def get_sub_pages(self):
-        sub_pages = Page.objects.filter(
-            parent_page=Page.objects.get(pk=self.id)).order_by('order')
-        if len(sub_pages) is 0 and self.parent_page is not None:
+        try:
             sub_pages = Page.objects.filter(
-                parent_page=Page.objects.get(
-                    pk=self.parent_page.id)).order_by('order')
-            for sub_page in sub_pages:
-                sub_page.loc = 'page:' + self.parent_page.title + ':' + \
-                    sub_page.title
-                sub_page.path = '/' + self.parent_page.title + '/' + \
-                    sub_page.title
-        else:
-            for sub_page in sub_pages:
-                sub_page.loc = 'page:' + self.title + '/' + sub_page.title
-                sub_page.path = '/' + self.title + '/' + sub_page.title
+                parent_page=Page.objects.get(pk=self.id)).order_by('order')
+            if len(sub_pages) is 0 and self.parent_page is not None:
+                sub_pages = Page.objects.filter(
+                    parent_page=Page.objects.get(
+                        pk=self.parent_page.id)).order_by('order')
+                for sub_page in sub_pages:
+                    sub_page.loc = 'page:' + self.parent_page.title + ':' + \
+                        sub_page.title
+                    sub_page.path = '/' + self.parent_page.title + '/' + \
+                        sub_page.title
+            else:
+                for sub_page in sub_pages:
+                    sub_page.loc = 'page:' + self.title + '/' + sub_page.title
+                    sub_page.path = '/' + self.title + '/' + sub_page.title
+        except:
+            sub_pages = None
         return sub_pages
 
 

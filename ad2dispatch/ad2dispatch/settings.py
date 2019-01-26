@@ -46,6 +46,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ALLOWED_HOSTS = os.environ.get('AD2_ALLOWED_HOSTS', '')
 ALLOWED_HOSTS = ALLOWED_HOSTS.split(',')
 
+FIXTURES_DIR = "./"
+
 INSTALLED_APPS = [
     'registration',
     'django.contrib.admin',
@@ -109,9 +111,9 @@ DATABASES = {
         'PASSWORD': os.environ.get('AD2_DB_PASSWORD'),
         'PORT': os.environ.get('AD2_DB_PORT', '3306'),
         'OPTIONS': {'ssl':{
-                    'key':'./client-key.pem',
-                    'cert':'./client-cert.pem',
-                    'ca':'./ca.pem'
+                    'key':'./certs/client-key.pem',
+                    'cert':'./certs/client-cert.pem',
+                    'ca':'./certs/ca.pem'
                     }
         }
     }
