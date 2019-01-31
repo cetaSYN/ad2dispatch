@@ -8,7 +8,7 @@
 <div class="jumbotron">
 	<p>Below are the upcoming {{ ORG_ACRONYM }} events for the next 30 days.</p>
 	<p>By volunteering, your identifying/contact information will be shared with the dispatcher of the event.</p>
-	<p>If you volunteer on the same day as a shift, please call or text the on-call phone: <a href="{{ ORG_PHONE_ALT }}">{{ ORG_PHONE_ALT_DISPLAY }}</a>.
+	<p>If you volunteer on the same day as a shift, please call or text the on-call phone: <a href="tel:{{ ORG_PHONE_ALT }}">{{ ORG_PHONE_ALT_DISPLAY }}</a>.
     <table class="table table-hover">
 		<form action="/volunteer/" method="post">{% csrf_token %}
 			{% for event in events %}
