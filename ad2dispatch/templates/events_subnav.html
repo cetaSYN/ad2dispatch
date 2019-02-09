@@ -3,12 +3,6 @@
 	<div class="col-md-12 sub-nav">
 		<nav>
 			<ul class="nav nav-pills pull-right">
-				{% if volunteer.is_driver %}
-					<li role="presentation" class="{% if request.path == '/volunteer/driver/' %}active{% endif %}"><a href="/volunteer/driver/">Driver Info</a></li>
-				{% endif %}
-				{% if volunteer.is_dispatcher %}
-                    <li role="presentation" class="{% if request.path == '/volunteer/dispatcher/' %}active{% endif %}"><a href="/volunteer/dispatcher/">Dispatcher Info</a></li>
-				{% endif %}
 				{% if perms.events.change_eventvolunteer %}
 					<li role="presentation" class="{% if request.path == '/volunteer/manage/' %}active{% endif %}"><a href="/volunteer/manage/">Manage</a></li>
 				{% endif %}

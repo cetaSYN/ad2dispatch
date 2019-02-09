@@ -1,33 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
 {% include 'events_subnav.html' %}
-{% include 'flash.html' %}
 
 <div class="jumbotron">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <div class="row">
-                <div class="col-md-4"><abbr title="{{ selected.days_until_msg }}">{{ selected.summary }}</abbr></div>
-            </div>
-        </div>
-        <div class="panel-body">
-            {% for vol in volunteers %}
-                <div class="row">
-                    <div class="col-md-4">Position: {{ vol.type }}</div>
-                    <div class="col-md-4">First Name: {{ vol.volunteer.first_name }}</div>
-                    <div class="col-md-4">Last Name: {{ vol.volunteer.last_name }}</div>
-                    <div class="col-md-4">Service: {{ vol.profile.service }}</div>
-                    <div class="col-md-4">Rank: {{ vol.profile.rank }}</div>
-                    <div class="col-md-4">Phone: {{ vol.profile.phone_number }}</div>
-                    <div class="col-md-4">Vehicle Desc: {{ vol.profile.vehicle_desc }}</div>
-                    <div class="col-md-4">Supervisor: {{ vol.profile.sup_name }}</div>
-                    <div class="col-md-4">Sup Phone: {{ vol.profile.sup_phone }}</div>
-                </div>
-                <hr />
-            {% endfor %}
-        </div>
-    </div>
+  <h2>Event Details:</h2>
+  <table class="table table-hover">
+    <tr><td>Title:</td><td>{{ event.title }}</td></tr>
+    <tr><td>Date/Time:</td><td>{{ event.date_time }}</td></tr>
+    <tr><td>Duration:</td><td>{{ event.duration }}</td></tr>
+    <tr><td>Location:</td><td>{{ event.location }}</td></tr>
+    <tr><td>Attire:</td><td>{{ event.attire }}</td></tr>
+    <tr><td>Details:</td><td>{{ event.details }}</td></tr>
+  </table>
+  <h2>{{ voltype.type }} Instructions:</h2>
+  <p>{{ voltype.instructions }}</p>
 </div>
 {% endblock %}
