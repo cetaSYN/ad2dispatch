@@ -16,9 +16,8 @@ def page(request, page_title=None, sub_page=None):
                     parent_page=None,
                     order=0,
                     title='Welcome!',
-                    content='You are seeing this page because you do not ' +
-                    'have any other pages created.<br> Please add content ' +
-                    'in the <a href="/admin/">admin panel</a>.',
+                    content='This is the homepage. Please add your own '+
+                            'in the <a href="/admin/">admin panel</a>.',
                     edited_by=None,
                     edited_date=None,
                     raw=False)

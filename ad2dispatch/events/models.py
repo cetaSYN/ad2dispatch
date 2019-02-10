@@ -37,13 +37,7 @@ class Event(models.Model):
         return self.date_time + self.duration
 
     def days_until(self):
-        return timezone.localtime(self.date_time).day - timezone.now().day
-
-    def days_until_msg(self):
-        if self.days_until() == 0:
-            return 'Today!'
-        else:
-            return str(self.days_until()) + ' days away'
+        return (timezone.localtime(self.date_time) - timezone.now()).days
 
     def volunteers_type(self, voltype):
         return EventVolunteer.objects.filter(event=self, type=voltype)

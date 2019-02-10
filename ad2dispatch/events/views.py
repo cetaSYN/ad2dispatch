@@ -112,7 +112,7 @@ def upcoming_list(request):
                 <a href="/accounts/profile/">profile</a>.'''
 
     for event in upcoming_events:
-        if request.user.has_perm('events.view_hidden_events_volunteertype'):
+        if request.user.has_perm('events.view_hidden_events'):
             event.type = VolunteerType.objects.all()
         else:
             event.type = VolunteerType.objects.filter(hidden=False)
