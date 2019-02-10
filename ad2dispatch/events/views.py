@@ -5,6 +5,7 @@ import urllib
 from datetime import timedelta, datetime
 
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.utils import timezone
@@ -12,7 +13,8 @@ from django.conf import settings
 
 from pages.models import get_top_pages
 from .models import Event, EventVolunteer, VolunteerType, do_unvolunteer, \
-    has_upcoming_vol, get_volunteers, get_running_events, position_is_full
+    has_upcoming_vol, get_volunteers, get_running_events, position_is_full, \
+    get_event_volunteer
 from .forms import EventManageDateSelectForm
 
 
@@ -95,6 +97,12 @@ def upcoming_list(request):
                                      settings.ORG_PHONE_ALT_DISPLAY
                                  )
                         vol_event.save()
+                        return redirect(
+                            "/volunteer/event/{}/{}".format(
+                                vol_event.event.pk,
+                                vol_event.type.type
+                            )
+                        )
                 else:
                     do_unvolunteer(vol_event)
         except Volunteer.DoesNotExist:
@@ -245,22 +253,36 @@ def manage(request, start_date=None, end_date=None):
 
 
 @login_required
-def event(request, event_id):
-    if not request.user.has_perm('events.change_eventvolunteer'):
-        from django.core.exceptions import PermissionDenied
+def event(request, event_id, type_name):
+    e_vol = get_event_volunteer(request.user, event_id, type_name)
+    if not e_vol.has_volunteered():
         raise PermissionDenied
 
-    try:
-        selected = Event.objects.filter(id=event_id)
-        volunteers = get_volunteers(selected)
-
-    except Event.DoesNotExist:
-        from django.http import Http404
-        raise Http404("Event does not exist.")
     top_pages = get_top_pages()
     context = {
         'top_pages': top_pages,
-        'selected': selected,
-        'volunteers': volunteers,
+        'event': Event.objects.get(pk=e_vol.event.pk),
+        'voltype': VolunteerType.objects.get(pk=e_vol.type.pk)
     }
     return render(request, 'event.html', context)
+
+
+@login_required
+def event_manage(request, event_id):
+    if not request.user.has_perm('events.change_eventvolunteer'):
+        raise PermissionDenied
+
+        try:
+            selected = Event.objects.filter(id=event_id)
+            volunteers = get_volunteers(selected)
+
+        except Event.DoesNotExist:
+            from django.http import Http404
+            raise Http404("Event does not exist.")
+            top_pages = get_top_pages()
+            context = {
+            'top_pages': top_pages,
+            'selected': selected,
+            'volunteers': volunteers,
+            }
+            return render(request, 'event_manage.html', context)

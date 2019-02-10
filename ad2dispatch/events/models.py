@@ -66,7 +66,7 @@ def get_running_events():
 
 
 class VolunteerType(models.Model):
-    type = models.CharField(max_length=16, null=False)
+    type = models.CharField(max_length=16, null=False, unique=True)
     max_volunteers = models.IntegerField(null=True, blank=True)
     instructions = models.TextField(null=False)
     hidden = models.BooleanField(null=False, blank=False, default=False)
@@ -125,3 +125,10 @@ def has_upcoming_vol(user, type):
             event__in=Event.objects.filter(date_time__lt=timezone.now() +
                                            timedelta(days=30))).count() > 0:
         return True
+
+
+def get_event_volunteer(user, event_id, type_name):
+    return EventVolunteer(
+        volunteer=user,
+        event=Event.objects.get(pk=event_id),
+        type=VolunteerType.objects.get(type=type_name))
