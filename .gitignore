@@ -8,3 +8,5 @@ ca.pem
 venv/
 mysql
 env_setup_remote.sh
+certs/
+prod-certs/
