@@ -12,6 +12,7 @@ class Volunteer(models.Model):
     service = models.CharField(max_length=24, null=True,
                                blank=True,
                                default='USAF')
+    unit = models.CharField(max_length=64, null=True, blank=True)
     rank = models.CharField(max_length=16, null=True, blank=True)
     phone_number = models.CharField(max_length=14, null=True)
     phone_number_2 = models.CharField(max_length=14, null=True, blank=True)
@@ -27,6 +28,9 @@ class Volunteer(models.Model):
                                    null=True,
                                    blank=True)
     accepted_waiver = models.BooleanField(default=False)
+    reviewed_profile = models.BooleanField(default=False,
+                                           help_text='If the volunteer has reviewed their profile since the last ' +
+                                           'major update to profile fields')
 
     @property
     def hours_total(self):
