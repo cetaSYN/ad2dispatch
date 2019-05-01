@@ -33,6 +33,11 @@ class ProfileForm(forms.Form):
         max_length=24,
         widget=forms.TextInput(
             attrs={'class': 'form-control'}))
+    unit = forms.CharField(
+        label='Unit:',
+        max_length=64,
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'}))
     rank = forms.CharField(
         label='Rank:',
         max_length=16,
@@ -74,12 +79,14 @@ class ProfileForm(forms.Form):
             user.save()
 
             volunteer.service = data['service']
+            volunteer.unit = data['unit']
             volunteer.rank = data['rank']
             volunteer.phone_number = data['phone_number']
             volunteer.vehicle_desc = data['vehicle_desc']
             volunteer.sup_name = data['sup_name']
             volunteer.sup_phone = data['sup_phone']
             volunteer.accepted_waiver = data['accepted_waiver']
+            volunteer.reviewed_profile = True
             volunteer.save()
 
             return True

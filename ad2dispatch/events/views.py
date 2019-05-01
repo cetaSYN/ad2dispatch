@@ -44,10 +44,10 @@ def upcoming_list(request):
                 context['flash_message'] = \
                     '''You must first populate your
                     <a href="/accounts/profile/">profile</a>.'''
-            elif not Volunteer.objects.get(user=request.user).accepted_waiver:
+            elif not Volunteer.objects.get(user=request.user).reviewed_profile:
                 context['flash_type'] = 'warning'
                 context['flash_message'] = \
-                    '''Before volunteering you must accept the waiver in your
+                    '''Before volunteering you must update your
                     <a href="/accounts/profile/">profile</a>.'''
             else:
                 # Parse and verify type
