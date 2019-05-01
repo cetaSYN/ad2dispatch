@@ -272,10 +272,17 @@ def event_manage(request, event_id):
     if not request.user.has_perm('events.change_eventvolunteer'):
         raise PermissionDenied
 
+    try:
+        selected = Event.objects.filter(id=event_id)
+        volunteers = get_volunteers(selected)
+
+    except Event.DoesNotExist:
+        from django.http import Http404
+        raise Http404("Event does not exist.")
     top_pages = get_top_pages()
     context = {
         'top_pages': top_pages,
-        'event': Event.objects.get(pk=e_vol.event.pk),
-        'voltype': VolunteerType.objects.get(pk=e_vol.type.pk)
+        'selected': selected,
+        'volunteers': volunteers,
     }
     return render(request, 'event_manage.html', context)
