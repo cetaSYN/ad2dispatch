@@ -21,7 +21,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-md-4"><abbr title="{{ event.days_until_msg }}">{{ event.summary }}</abbr></div>
-                    {% for type in event.type %}
+                    {% for type in event.types.all %}
                         <div class="col-md-4">( {{ type.volnum }}
                             {% if type.max_volunteers %}/&nbsp;{{ type.max_volunteers }}{% endif %}
                             {% if type.requested_volunteers %}/&nbsp;{{ type.requested_volunteers}}{% endif %}
@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="panel-body">
-                {% for type in event.type %}
+                {% for type in event.types.all %}
                     {% for vol in type.vol %}
                         <div class="row">
                             <div class="col-md-4">Position: {{ type }}</div>

@@ -7,6 +7,55 @@ from django.template import defaultfilters
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import Q
+
+
+class VolunteerType(models.Model):
+    type = models.CharField(max_length=16, null=False, unique=False, help_text='Name of volunteer type')
+    common = models.BooleanField(null=False, blank=False, default=False, help_text='Common type. If checked, will prevent the system from hiding the type after a week')
+    default = models.BooleanField(null=False, blank=False, default=False, help_text='If checked, this type will be added to new events by default. Assumes Common')
+    max_volunteers = models.IntegerField(null=True, blank=True, help_text='Maximum volunteers allowed for an event')
+    instructions = models.TextField(null=False, help_text='Instructions given to volunteers of this type upon volunteering')
+    hidden = models.BooleanField(null=False, blank=False, default=False, help_text='If checked, will only be shown to users with the view_hidden_events and vol_hidden_events permissions')
+    created = models.DateField(null=False, blank=False, auto_now_add=True)  # Used exclusively for expiring uncommon volunteer types to prevent clutter
+
+    class Meta:
+        default_permissions = ()
+        permissions = (("view_hidden_events", "Can view hidden events"),
+                       ("vol_hidden_events", "Can volunteer for hidden events"))
+
+    def __str__(self):
+        return self.type
+
+
+class EventVolunteer(models.Model):
+    volunteer = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
+    event = models.ForeignKey('Event', on_delete=models.CASCADE, null=False)
+    # 'Event' defined below, referenced by name
+    type = models.ForeignKey(VolunteerType, on_delete=models.CASCADE,
+                             null=False)
+
+    class Meta:
+        default_permissions = ()
+
+    def has_volunteered(self):
+        if EventVolunteer.objects.filter(volunteer=self.volunteer,
+                                         event=self.event,
+                                         type=self.type).count() > 0:
+            return True
+        return False
+
+    def get_profile(self):
+        from userprofiles.models import Volunteer
+        return Volunteer.objects.get(user=self.volunteer)
+
+
+def default_types():
+    return VolunteerType.objects.filter(default=True)
+
+
+def common_or_recent_types():
+    return Q(common=True) | Q(default=True) | Q(created__gt=timezone.now() + timedelta(days=7))
 
 
 class Event(models.Model):
@@ -22,6 +71,7 @@ class Event(models.Model):
                                  'added to the availability listing. '
                                  'Leaving this blank will add it 30 days ' +
                                  'prior to the start.')
+    types = models.ManyToManyField(VolunteerType, default=default_types, limit_choices_to=common_or_recent_types)
 
     class Meta:
         default_permissions = ()
@@ -50,34 +100,18 @@ class Event(models.Model):
             timezone.now < (self.date_time + self.duration)
 
 
-def position_is_full(event, type):
-    max_vols = VolunteerType.objects.get(pk=type).max_volunteers
-    if max_vols is None:
-        return False
-    return EventVolunteer.objects.filter(
-        event=Event.objects.get(pk=event),
-        type=VolunteerType.objects.get(pk=type)).count() >= max_vols
+def do_unvolunteer(vol_event):
+    sel = EventVolunteer.objects.get(volunteer=vol_event.volunteer,
+                                     event=vol_event.event,
+                                     type=vol_event.type)
+    sel.delete()
 
 
-def get_running_events():
-    return Event.objects.filter(date_time__lt=timezone.now(),
-                                date_time__gt=(timezone.now() +
-                                timedelta(days=-1)))  # TODO Not timedelta
-
-
-class VolunteerType(models.Model):
-    type = models.CharField(max_length=16, null=False, unique=True)
-    max_volunteers = models.IntegerField(null=True, blank=True)
-    instructions = models.TextField(null=False)
-    hidden = models.BooleanField(null=False, blank=False, default=False)
-
-    class Meta:
-        default_permissions = ()
-        permissions = (("view_hidden_events", "Can view hidden events"),
-                       ("vol_hidden_events", "Can volunteer for hidden events"))
-
-    def __str__(self):
-        return self.type
+def get_event_volunteer(user, event_id, type_name):
+    return EventVolunteer(
+        volunteer=user,
+        event=Event.objects.get(pk=event_id),
+        type=VolunteerType.objects.get(type=type_name))
 
 
 def get_volunteers(events):
@@ -90,45 +124,10 @@ def get_volunteers(events):
     return volunteers
 
 
-class EventVolunteer(models.Model):
-    volunteer = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, null=False)
-    type = models.ForeignKey(VolunteerType, on_delete=models.CASCADE,
-                             null=False)
-
-    class Meta:
-        default_permissions = ()
-
-    def has_volunteered(self):
-        if EventVolunteer.objects.filter(volunteer=self.volunteer,
-                                         event=self.event,
-                                         type=self.type).count() > 0:
-            return True
+def position_is_full(event, type):
+    max_vols = VolunteerType.objects.get(pk=type).max_volunteers
+    if max_vols is None:
         return False
-
-    def get_profile(self):
-        from userprofiles.models import Volunteer
-        return Volunteer.objects.get(user=self.volunteer)
-
-
-def do_unvolunteer(vol_event):
-    sel = EventVolunteer.objects.get(volunteer=vol_event.volunteer,
-                                     event=vol_event.event,
-                                     type=vol_event.type)
-    sel.delete()
-
-
-def has_upcoming_vol(user, type):
-    if EventVolunteer.objects.filter(
-            volunteer=user,
-            type=VolunteerType.objects.get(type=type),
-            event__in=Event.objects.filter(date_time__lt=timezone.now() +
-                                           timedelta(days=30))).count() > 0:
-        return True
-
-
-def get_event_volunteer(user, event_id, type_name):
-    return EventVolunteer(
-        volunteer=user,
-        event=Event.objects.get(pk=event_id),
-        type=VolunteerType.objects.get(type=type_name))
+    return EventVolunteer.objects.filter(
+        event=Event.objects.get(pk=event),
+        type=VolunteerType.objects.get(pk=type)).count() >= max_vols

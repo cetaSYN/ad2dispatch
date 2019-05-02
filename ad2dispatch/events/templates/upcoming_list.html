@@ -14,7 +14,7 @@
 			{% for event in events %}
 				<tr>
 					<td class="vol text-right text-nowrap">
-						{% for type in event.type %}
+						{% for type in event.types.all %}
 							{% if forloop.first %}
 								<div class="col-md-6">
 								{% if event.days_until == 0 %}

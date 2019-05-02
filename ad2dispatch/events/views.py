@@ -12,9 +12,7 @@ from django.utils import timezone
 from django.conf import settings
 
 from pages.models import get_top_pages
-from .models import Event, EventVolunteer, VolunteerType, do_unvolunteer, \
-    has_upcoming_vol, get_volunteers, get_running_events, position_is_full, \
-    get_event_volunteer
+from .models import Event, EventVolunteer, VolunteerType, do_unvolunteer, get_volunteers, position_is_full, get_event_volunteer
 from .forms import EventManageDateSelectForm
 
 
@@ -112,72 +110,18 @@ def upcoming_list(request):
                 <a href="/accounts/profile/">profile</a>.'''
 
     for event in upcoming_events:
-        if request.user.has_perm('events.view_hidden_events'):
-            event.type = VolunteerType.objects.all()
-        else:
-            event.type = VolunteerType.objects.filter(hidden=False)
-        for voltype in event.type:
+        if not request.user.has_perm('events.view_hidden_events'):
+            event.types = event.types.filter(hidden=False)
+        for voltype in event.types.all():
             voltype.volnum = Event.num_volunteers_type(event, voltype=voltype)
             if request.user.is_authenticated:
                 if EventVolunteer.objects.filter(
                         volunteer=request.user,
                         event=event,
                         type=voltype).count() > 0:
-                    voltype.me = True
-
-    if request.user.is_authenticated:
-        volunteer = {
-            'is_driver': has_upcoming_vol(
-                user=request.user, type='driver'),
-            'is_dispatcher': has_upcoming_vol(
-                user=request.user, type='dispatcher'),
-        }
-
-        context['volunteer'] = volunteer
+                    voltype.me = True  # TODO: Not working?
 
     return render(request, 'upcoming_list.html', context)
-
-
-@login_required
-def driver(request):
-    instructions = VolunteerType.objects.get(type='Driver').instructions
-
-    top_pages = get_top_pages()
-    volunteer = {
-        'is_driver': has_upcoming_vol(
-            user=request.user, type='driver'),
-        'is_dispatcher': has_upcoming_vol(
-            user=request.user, type='dispatcher'),
-    }
-
-    context = {
-        'instructions': instructions,
-        'top_pages': top_pages,
-        'volunteer': volunteer,
-    }
-    return render(request, 'driver.html', context)
-
-
-@login_required
-def dispatcher(request):
-    instructions = VolunteerType.objects.get(type='Dispatcher').instructions
-
-    top_pages = get_top_pages()
-    volunteer = {
-        'is_driver': has_upcoming_vol(
-            user=request.user, type='driver'),
-        'is_dispatcher': has_upcoming_vol(
-            user=request.user, type='dispatcher'),
-    }
-
-    volunteers = get_volunteers(get_running_events())
-    context = {
-        'instructions': instructions,
-        'volunteers': volunteers,
-        'top_pages': top_pages,
-        'volunteer': volunteer,
-    }
-    return render(request, 'dispatcher.html', context)
 
 
 @login_required
@@ -229,20 +173,13 @@ def manage(request, start_date=None, end_date=None):
         ).order_by('date_time')[:50]
     # This is stupid-inefficient
     for event in upcoming_events:
-        event.type = VolunteerType.objects.all()
-        for voltype in event.type:
+        for voltype in event.types.all():
             voltype.vol = EventVolunteer.objects.filter(
                 event=event, type=voltype)
             # RIP performance
             for vol in voltype.vol:
                 vol.profile = vol.get_profile()
             voltype.volnum = Event.num_volunteers_type(event, voltype=voltype)
-            # if request.user.is_authenticated:
-            #     if EventVolunteer.objects.filter(
-            #             volunteer=request.user,
-            #             event=event,
-            #             type=voltype).count() > 0:
-            #         voltype.me = True
 
     top_pages = get_top_pages()
     context['events'] = upcoming_events
