@@ -1,0 +1,11 @@
+boto
+Django
+django-axes
+django-registration-redux
+django-ses
+markdown
+mysqlclient
+pytz
+whitenoise
+zappa
+zappa-django-utils
