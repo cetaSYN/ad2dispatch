@@ -1,0 +1,5 @@
+FROM mysql
+ENV MYSQL_DATABASE ad2dispatch
+ENV MYSQL_USER ad2dispatch
+ENV MYSQL_PASSWORD password
+RUN mysql_ssl_rsa_setup
