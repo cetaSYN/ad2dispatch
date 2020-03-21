@@ -18,7 +18,7 @@ class Event(models.Model):
 
 
 class VolunteerType(models.Model):
-    max_volunteers = models.IntegerField(max_length=5)
+    max_volunteers = models.IntegerField()
     instructions = models.TextField()
     required_installation_group = models.ForeignKey(
         ins_model.InstallationGroup,
