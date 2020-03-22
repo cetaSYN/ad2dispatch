@@ -1,11 +1,13 @@
 version: '3'
 
 services:
-  # TEMP: Using SQLite3 for now
-  # db:
-  #   build: docker/mysql/.
-  #   volumes:
-  #     - ./db:/var/lib/mysql
+  postgres:
+    image: postgres
+    volumes:
+      - data-volume:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_HOST_AUTH_METHOD: "trust"
 
   django_migration:
     build: docker/django/.
@@ -15,8 +17,10 @@ services:
              python manage.py migrate"
     volumes:
       - .:/srv
-    # depends_on:
-      # - db
+    env_file: 
+      - ./testing/.testenv
+    depends_on:
+      - postgres
 
   django:
     build: docker/django/.
@@ -24,7 +28,13 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/srv
+    env_file: 
+      - ./testing/.testenv
     ports:
       - "8000:8000"
     depends_on:
       - django_migration
+      - postgres
+
+volumes:
+  data-volume:

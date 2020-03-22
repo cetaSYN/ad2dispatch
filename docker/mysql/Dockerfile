@@ -1,6 +1,0 @@
-FROM mysql
-ENV MYSQL_DATABASE ad2dispatch
-ENV MYSQL_USER ad2dispatch
-ENV MYSQL_PASSWORD password
-ENV MYSQL_RANDOM_ROOT_PASSWORD true
-RUN mysql_ssl_rsa_setup
