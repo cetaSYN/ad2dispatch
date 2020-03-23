@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils import timezone
 from installations import models as ins_model
-from volunteers import models as vol_model
 
 
 class Page(models.Model):
@@ -32,7 +31,11 @@ class PageEdit(models.Model):
     title = models.CharField(max_length=128, help_text="The new title of the page")
     content = models.TextField(help_text="The new page content")
     edited_by = models.ForeignKey(
-        vol_model.Volunteer, on_delete=models.SET_NULL, null=True, blank=False, help_text="Volunteer editing the page"
+        ins_model.InstallationVolunteer,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=False,
+        help_text="Volunteer editing the page",
     )
     edited_date_time = models.DateTimeField(default=timezone.now, help_text="Date and time that the page was edited")
 

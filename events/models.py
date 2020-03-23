@@ -1,14 +1,12 @@
 from django.db import models
 from django.utils import timezone
-from volunteers import models as vol_model
-from installations import models as ins_model
 
 
 class Event(models.Model):
     """An event that can be volunteered for"""
 
     installation = models.ForeignKey(
-        ins_model.Installation,
+        "installations.Installation",
         on_delete=models.CASCADE,
         help_text="Reference to the installation at which the event is occurring",
     )
@@ -46,7 +44,7 @@ class EventPosition(models.Model):
     max_volunteers = models.IntegerField(help_text="Maximum number of volunteers for the position")
     instructions = models.TextField(help_text="Instructions for the volunteers regarding their position")
     required_installation_group = models.ForeignKey(
-        ins_model.InstallationGroup,
+        "installations.InstallationGroup",
         on_delete=models.CASCADE,
         help_text="The installation group the volunteer must belong to to volunteer for the position",
     )
@@ -60,7 +58,7 @@ class EventVolunteer(models.Model):
     """A volunteer in relation to an event and position"""
 
     volunteer = models.ForeignKey(
-        vol_model.Volunteer, on_delete=models.CASCADE, help_text="The Volunteer for the event",
+        "installations.InstallationVolunteer", on_delete=models.CASCADE, help_text="The Volunteer for the event",
     )
     event = models.ForeignKey(Event, on_delete=models.CASCADE, help_text="The event being volunteered for")
     event_position = models.ForeignKey(

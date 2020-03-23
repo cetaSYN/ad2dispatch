@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils import timezone
 from installations import models as ins_model
-from volunteers import models as vol_model
 
 
 class NewsArticle(models.Model):
@@ -31,7 +30,7 @@ class NewsArticleEdit(models.Model):
     title = models.CharField(max_length=128, help_text="The new title of the news article")
     content = models.TextField(help_text="The new news article content")
     edited_by = models.ForeignKey(
-        vol_model.Volunteer,
+        ins_model.InstallationVolunteer,
         on_delete=models.SET_NULL,
         null=True,
         blank=False,
