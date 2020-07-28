@@ -2,6 +2,6 @@ Django
 django-axes
 django-ses
 markdown
-psycopg2
+psycopg2-binary
 pytz
 whitenoise

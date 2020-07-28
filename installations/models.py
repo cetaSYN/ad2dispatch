@@ -1,3 +1,4 @@
+from django.core.validators import RegexValidator
 from django.db import models
 from django.utils import timezone
 from volunteers import models as vol_models
@@ -6,9 +7,15 @@ from events import models as ev_models
 
 class Installation(models.Model):
     """An ad2 organization at an installation"""
+    
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
 
     title = models.CharField(max_length=128, help_text="Title of the installation organization")
     slug = models.SlugField(help_text="The url slug of the installation. NOTE: Editing this field may break links")
+    phone_number = models.CharField(
+        validators=[phone_regex],
+        max_length=17
+    )
     latitude = models.DecimalField(
         max_digits=6,
         decimal_places=3,

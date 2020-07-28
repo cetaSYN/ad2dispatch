@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import Page, PageEdit
 
-# Register your models here.
+@admin.register(Page, PageEdit)
+class PageAdmin(admin.ModelAdmin):
+    pass

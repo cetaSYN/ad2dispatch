@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
+DISCLAIMER = os.environ.get('AD2_ORG_DISCLAIMER', '''THIS IS A PRIVATE ORGANIZATION.
+ IT IS NOT A PART OF THE DEPARTMENT OF DEFENSE OR ANY OF ITS COMPONENTS AND IT
+HAS NO GOVERNMENTAL STATUS.''')
+
 DOMAIN = os.environ.get("AD2_DOMAIN", "ad2.cab")
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -54,7 +58,7 @@ ROOT_URLCONF = "ad2dispatch.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -62,6 +66,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "ad2dispatch.context_processors.org_info",
             ],
         },
     },
